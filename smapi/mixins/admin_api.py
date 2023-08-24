@@ -34,16 +34,6 @@ class AdminAPIMixin(SMAPIMixin, Protocol):
         """Delete domain on cloudoon email server"""
         return self._post(f"/api/v1/settings/sysadmin/domain-delete/{domain}/true")
 
-    def system_suspend_domain(self, domain: str):
-        """Suspend domain on cloudoon email server"""
-        payload = {"isEnabled": False}
-        return self.system_update_domain_settings(domain, payload)
-
-    def system_unsuspend_domain(self, domain: str):
-        """Unsuspend domain on cloudoon email server"""
-        payload = {"isEnabled": True}
-        return self.system_update_domain_settings(domain, payload)
-
     def system_get_login_token(self, domain: str, username: str, **kwargs):
         """
         Get login from cloudoon email server.
@@ -71,10 +61,3 @@ class AdminAPIMixin(SMAPIMixin, Protocol):
         }
 
         return self._post("/api/v1/auth/retrieve-login-token", payload)
-
-    def system_get_auto_login_url(self, domain: str, username: str, *args, **kwargs):
-        """Get auto login url from cloudoon email server"""
-        response = self.system_get_login_token(
-            *args, domain=domain, username=username, **kwargs
-        )
-        return response.get("autoLoginUrl")

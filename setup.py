@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="smartermail-api",
-    version="0.6.0",
+    version="0.7.0",
     author="Zachary Sylvester",
     author_email="zacharysylvester81@gmail.com",
     description="This is a simple python wrapper for the SmarterMail API.",
