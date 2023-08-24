@@ -27,6 +27,15 @@ class SMAPI:
         response = requests.get(url, headers=headers)
         return response.json()
 
+    def _post(self, endpoint, data, path_params=""):
+        """
+        Helper function to perform GET requests.
+        """
+        url = f"{self.url}{endpoint}{path_params}"
+        headers = {"Authorization": f"Bearer {self.auth}"}
+        response = requests.post(url, headers=headers, json=data)
+        return response.json()
+
     def get_user(self, input_email):
         """
         Get user data by email.
