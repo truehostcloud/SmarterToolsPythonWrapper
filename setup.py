@@ -6,7 +6,7 @@ setup(
     description="This is a simple python wrapper for the SmarterMail API.",
     author="Zachary Sylvester",
     license="Apache License 2.0",
-    packages=find_packages(include=["api"]),
+    packages=find_packages(include=["api/smapi.py", "api/mixins"]),
     install_requires=["requests"],
     project_urls={
         "Source": "https://github.com/zjs81/SmarterToolsPythonWrapper",
