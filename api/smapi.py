@@ -1,7 +1,9 @@
 import requests
 
+from .mixins.admin_api import AdminAPIMixin
 
-class SMAPI:
+
+class SMAPI(AdminAPIMixin):
     def __init__(self, username, password, url):
         self.username = username
         self.password = password
