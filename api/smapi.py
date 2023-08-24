@@ -1,30 +1,29 @@
 import requests
 
+
 class SMAPI:
-    
     def __init__(self, username, password, url):
         self.username = username
         self.password = password
         self.url = url
         self.auth = self.authenticate()
 
-    
     def authenticate(self):
         """
         Authenticate the user and store the access token.
         """
         auth_url = f"{self.url}/api/v1/auth/authenticate-user"
-        auth_data = {'username': self.username, 'password': self.password}
+        auth_data = {"username": self.username, "password": self.password}
         response = requests.post(auth_url, data=auth_data)
         access_info = response.json()
-        return access_info['accessToken']
-    
+        return access_info["accessToken"]
+
     def _get(self, endpoint, path_params=""):
         """
         Helper function to perform GET requests.
         """
         url = f"{self.url}{endpoint}{path_params}"
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.get(url, headers=headers)
         return response.json()
 
@@ -33,10 +32,9 @@ class SMAPI:
         Get user data by email.
         """
         data = {"email": input_email}
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         url = f"{self.url}/api/v1/settings/sysadmin/get-user"
         return requests.post(url, data=data, headers=headers).json()
-
 
     def get_domain(self):
         """
@@ -67,6 +65,7 @@ class SMAPI:
         Get domain account list counts.
         """
         return self._get("/api/v1/settings/domain/account-list-counts")
+
     def system_domain_details(self, input_domain):
         """
         Get system domain details.
@@ -78,7 +77,7 @@ class SMAPI:
         Export domains list.
         """
         url = f"{self.url}/api/v1/settings/sysadmin/export-domains-list"
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.post(url, headers=headers)
         response.encoding = response.apparent_encoding
         return response.text
@@ -104,11 +103,10 @@ class SMAPI:
         """
         url = f"{self.url}/api/v1/settings/domain/mailing-lists/{input_mailing_list_id}/subscriber-remove"
         data = {"data": email}
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.post(url, data=data, headers=headers)
         response.encoding = response.apparent_encoding
         return response.text
-
 
     def add_banned_user_mailing_list(self, input_mailing_list_id, email):
         """
@@ -116,7 +114,7 @@ class SMAPI:
         """
         url = f"{self.url}/api/v1/settings/domain/mailing-lists/{input_mailing_list_id}/banned-user-add"
         data = {"data": email}
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.post(url, data=data, headers=headers)
         response.encoding = response.apparent_encoding
         return response.text
@@ -126,8 +124,8 @@ class SMAPI:
         Add digest subscribers to a mailing list.
         """
         url = f"{self.url}/api/v1/settings/domain/mailing-lists/{input_mailing_list_id}/digest-subscriber-add"
-        data = {'data': email}
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        data = {"data": email}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.post(url, data=data, headers=headers)
         response.encoding = response.apparent_encoding
         return response.text
@@ -137,27 +135,32 @@ class SMAPI:
         Remove all subscribers from a mailing list.
         """
         url = f"{self.url}/api/v1/settings/domain/mailing-lists/{input_mailing_list_id}/subscriber-remove-all"
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.post(url, headers=headers)
         response.encoding = response.apparent_encoding
         return response.text
 
-    def edit_subscriber_mailing_lists(self, input_subscriber_email, input_mailing_list_id, input_mailing_list_id2):
+    def edit_subscriber_mailing_lists(
+        self, input_subscriber_email, input_mailing_list_id, input_mailing_list_id2
+    ):
         """
         Edit subscriber mailing list information.
         """
         url = f"{self.url}/api/v1/settings/domain/mailing-lists/subscribers/{input_subscriber_email}/edit/{input_mailing_list_id}"
-        data = {'subscribedLists': input_mailing_list_id2}
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        data = {"subscribedLists": input_mailing_list_id2}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.post(url, data=data, headers=headers)
         response.encoding = response.apparent_encoding
         return response.text
-    def get_subscriber_mailing_list(self, input_mailing_list_id, input_subscriber_email):
+
+    def get_subscriber_mailing_list(
+        self, input_mailing_list_id, input_subscriber_email
+    ):
         """
         Get subscriber mailing list information.
         """
         url = f"{self.url}/api/v1/settings/domain/mailing-lists/subscribers/{input_subscriber_email}/{input_mailing_list_id}"
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.get(url, headers=headers)
         return response.json()
 
@@ -167,7 +170,7 @@ class SMAPI:
         """
         url = f"{self.url}/api/v1/settings/domain/mailing-lists/optin/{input_data}"
         data = {"data": input_post}
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.post(url, data=data, headers=headers)
         return response.json()
 
@@ -177,7 +180,7 @@ class SMAPI:
         """
         url = f"{self.url}/api/v1/settings/domain/mailing-lists/{input_mailing_list_id}/digest-subscriber-remove"
         data = {"data": sub_email}
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.post(url, data=data, headers=headers)
         return response.json()
 
@@ -187,7 +190,7 @@ class SMAPI:
         """
         url = f"{self.url}/api/v1/settings/domain/mailing-lists/{input_mailing_list_id}/digest-subscriber-add"
         data = {"data": sub_email}
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.post(url, data=data, headers=headers)
         return response.json()
 
@@ -196,7 +199,7 @@ class SMAPI:
         Remove all digest subscribers from a mailing list.
         """
         url = f"{self.url}/api/v1/settings/domain/mailing-lists/{input_mailing_list_id}/digest-subscriber-remove-all"
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.post(url, headers=headers)
         return response.json()
 
@@ -205,8 +208,13 @@ class SMAPI:
         Send a message using the mail API.
         """
         url = f"{self.url}/api/v1/mail/message-put"
-        data = {"from": email_from, "subject": subject, "to": email_to, "messagePlainText": body}
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        data = {
+            "from": email_from,
+            "subject": subject,
+            "to": email_to,
+            "messagePlainText": body,
+        }
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.post(url, data=data, headers=headers)
         response.encoding = response.apparent_encoding
         return response.text
@@ -216,18 +224,21 @@ class SMAPI:
         Restore folders for a given email.
         """
         url = f"{self.url}/api/v1/settings/sysadmin/restore-folders"
-        data = {"restorations": [{'folder': folder, 'email': email, 'recursive': recursive}]}
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        data = {
+            "restorations": [{"folder": folder, "email": email, "recursive": recursive}]
+        }
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.post(url, json=data, headers=headers)
         response.encoding = response.apparent_encoding
         return response.text
+
     def get_user_folder(self, folder):
         """
         Get a user folder.
         """
         url = f"{self.url}/api/v1/folders/folder"
-        data = {'folder': folder}
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        data = {"folder": folder}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.post(url, json=data, headers=headers)
         response.encoding = response.apparent_encoding
         return response.text
@@ -237,7 +248,7 @@ class SMAPI:
         List mail folders for users.
         """
         url = f"{self.url}/api/v1/folders/list-email-folders"
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.get(url, headers=headers)
         response.encoding = response.apparent_encoding
         return response.text
@@ -247,13 +258,13 @@ class SMAPI:
         Impersonate a user as a system administrator.
         """
         url = f"{self.url}/api/v1/settings/domain/impersonate-user"
-        data = {'email': email}
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        data = {"email": email}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.post(url, json=data, headers=headers)
         response.encoding = response.apparent_encoding
         text = response.text.replace("true", '"true"').replace("null", '"null"')
         result = eval(text)
-        self.auth = result['impersonateAccessToken']
+        self.auth = result["impersonateAccessToken"]
         return self.auth
 
     def get_domain_admins(self, domain):
@@ -262,7 +273,7 @@ class SMAPI:
         """
         url = f"{self.url}/api/v1/settings/sysadmin/domain-admins/{domain}"
         data = {"domain": domain}
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.get(url, json=data, headers=headers)
         response.encoding = response.apparent_encoding
         return response.text
@@ -272,7 +283,7 @@ class SMAPI:
         List users in a domain.
         """
         url = f"{self.url}/api/v1/settings/domain/list-users"
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.get(url, headers=headers)
         response.encoding = response.apparent_encoding
         return response.text
@@ -283,13 +294,15 @@ class SMAPI:
         """
         url = f"{self.url}/api/v1/folders/folder-patch"
         data = {"newFolder": new_folder, "folder": folder}
-        headers = {'Authorization': f'Bearer {self.auth}'}
+        headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.post(url, json=data, headers=headers)
         response.encoding = response.apparent_encoding
         return response.text
-    
+
     def get_github(self):
         """
         Get github repo
         """
-        print("Visit https://github.com/zjs81/SmarterToolsPythonWrapper Thanks for using this wrapper! ")
+        print(
+            "Visit https://github.com/zjs81/SmarterToolsPythonWrapper Thanks for using this wrapper! "
+        )
