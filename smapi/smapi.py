@@ -8,7 +8,8 @@ class SMAPI(AdminAPIMixin):
         self.username = username
         self.password = password
         self.url = url
-        self.auth = self.authenticate()
+        access_info = self.authenticate()
+        self.auth = access_info["accessToken"]
 
     def authenticate(self):
         """
@@ -20,7 +21,7 @@ class SMAPI(AdminAPIMixin):
         if not response.ok:
             raise Exception(f"Authentication failed: {response.text}")
         access_info = response.json()
-        return access_info["accessToken"]
+        return access_info
 
     def _get(self, endpoint, path_params=""):
         """
