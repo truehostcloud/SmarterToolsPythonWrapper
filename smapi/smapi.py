@@ -17,6 +17,8 @@ class SMAPI(AdminAPIMixin):
         auth_url = f"{self.url}/api/v1/auth/authenticate-user"
         auth_data = {"username": self.username, "password": self.password}
         response = requests.post(auth_url, data=auth_data)
+        if not response.ok:
+            raise Exception(f"Authentication failed: {response.text}")
         access_info = response.json()
         return access_info["accessToken"]
 
@@ -27,6 +29,8 @@ class SMAPI(AdminAPIMixin):
         url = f"{self.url}{endpoint}{path_params}"
         headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.get(url, headers=headers)
+        if not response.ok:
+            raise Exception(f"Request failed: {response.text}")
         return response.json()
 
     def _post(self, endpoint, data, path_params=""):
@@ -36,6 +40,8 @@ class SMAPI(AdminAPIMixin):
         url = f"{self.url}{endpoint}{path_params}"
         headers = {"Authorization": f"Bearer {self.auth}"}
         response = requests.post(url, headers=headers, json=data)
+        if not response.ok:
+            raise Exception(f"Request failed: {response.text}")
         return response.json()
 
     def get_user(self, input_email):
