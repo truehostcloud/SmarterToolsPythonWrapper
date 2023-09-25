@@ -24,7 +24,9 @@ class AdminAPIMixin(SMAPIMixin, Protocol):
     def system_update_domain_settings(self, domain: str, data: Dict):
         """Update domain settings on cloudoon email server"""
         payload = {"domainSettings": data}
-        return self._post(f"/api/v1/settings/sysadmin/domain/{domain}", payload)
+        return self._post(
+            f"/api/v1/settings/sysadmin/domain-settings/{domain}", payload
+        )
 
     def system_add_domain(self, data: Dict):
         """Create domain on cloudoon email server"""
